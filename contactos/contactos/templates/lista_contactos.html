@@ -1,0 +1,89 @@
+{% extends 'contactos/base.html' %}
+
+{% block title %}Lista de Contactos - Agenda Personal{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header y Búsqueda -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Mis Contactos</h2>
+            <p class="text-gray-600 mt-2">Total: {{ total_contactos }} contactos</p>
+        </div>
+        
+        <!-- Barra de búsqueda -->
+        <form method="get" class="flex space-x-2 w-full md:w-auto">
+            <input type="text" name="q" value="{{ query }}" 
+                   placeholder="Buscar por nombre o correo..." 
+                   class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 w-full">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition duration-200">
+                Buscar
+            </button>
+        </form>
+    </div>
+
+    <!-- Botón agregar -->
+    <div>
+        <a href="{% url 'agregar_contacto' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Agregar Nuevo Contacto
+        </a>
+    </div>
+
+    <!-- Lista de contactos -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        {% if contactos %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for contacto in contactos %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ contacto.nombre }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">{{ contacto.telefono }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">{{ contacto.correo }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                            <a href="{% url 'detalle_contacto' contacto.id %}" class="text-blue-600 hover:text-blue-900">Ver</a>
+                            <a href="{% url 'editar_contacto' contacto.id %}" class="text-green-600 hover:text-green-900">Editar</a>
+                            <a href="{% url 'eliminar_contacto' contacto.id %}" class="text-red-600 hover:text-red-900">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <p class="text-gray-500 text-lg mb-4">
+                {% if query %}
+                No se encontraron contactos para "{{ query }}"
+                {% else %}
+                No tienes contactos guardados
+                {% endif %}
+            </p>
+            <a href="{% url 'agregar_contacto' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition duration-200">
+                Agregar Primer Contacto
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

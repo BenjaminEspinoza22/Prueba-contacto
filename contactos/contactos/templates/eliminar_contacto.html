@@ -1,0 +1,39 @@
+{% extends 'contactos/base.html' %}
+
+{% block title %}
+Eliminar Contacto - Agenda Personal
+{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="text-center">
+            <!-- Icono de advertencia -->
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Eliminar Contacto</h2>
+            <p class="text-gray-600 mb-6">
+                ¿Estás seguro de que deseas eliminar el contacto 
+                <strong class="text-gray-800">"{{ contacto.nombre }}"</strong>?
+                Esta acción no se puede deshacer.
+            </p>
+
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200">
+                        Sí, Eliminar
+                    </button>
+                    <a href="{% url 'lista_contactos' %}" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
